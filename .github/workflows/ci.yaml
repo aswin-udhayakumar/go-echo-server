@@ -1,0 +1,48 @@
+name: Tapping Server CI Pipeline
+
+on:
+  pull_request:
+    branches: ["*"]
+  workflow_call:
+    inputs:
+      branch:
+        required: false
+        type: string
+        description: 'branch to checkout and test'
+    secrets:
+      GH_TOKEN:
+        required: true      
+
+jobs:
+  lint-and-test:
+    name: Fmt, Lint and Test
+    runs-on: ["self-hosted", "docker-access"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: 1vapigw-traffic
+          ref: ${{ inputs.branch || github.ref }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.0'
+
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.64.5
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: Fmt
+        run: make fmt
+        working-directory: ./go-echo-server
+  
+      - name: Lint
+        run: make lint
+        working-directory: ./go-echo-server
+
+      - name: Test
+        run: make unit-test
+        working-directory: ./go-echo-server

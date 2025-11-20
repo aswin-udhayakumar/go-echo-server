@@ -2,6 +2,21 @@ dep:
 	go mod tidy
 	go mod vendor
 
+lint:
+	@which golangci-lint > /dev/null || (echo "golangci-lint not found, installing..." && make lint-install)
+	golangci-lint run ./...
+
+lint-install:
+	@echo "Installing golangci-lint..."
+	@which brew > /dev/null && brew install golangci-lint || \
+		(curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin)
+
+fmt:
+	go fmt ./...
+
+unit-test:
+	go test -cover ./... -v
+
 build:
 	go build -o go-echo-server main.go 
 
