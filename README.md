@@ -32,6 +32,21 @@ A simple echo server written in Go using the Chi router framework. This server p
 
 ### Local Development
 
+#### Code Quality and Testing
+```bash
+# Format code
+make fmt
+
+# Run tests with coverage
+make unit-test
+
+# Run linting (installs golangci-lint if needed)
+make lint
+
+# Install golangci-lint manually
+make lint-install
+```
+
 #### Build and Run
 ```bash
 # Build the application
@@ -101,6 +116,10 @@ Hello, Echo Server!
 | Command | Description |
 |---------|-------------|
 | `make dep` | Install and vendor dependencies |
+| `make fmt` | Format code using go fmt |
+| `make unit-test` | Run unit tests with coverage |
+| `make lint` | Run golangci-lint (installs if needed) |
+| `make lint-install` | Install golangci-lint tool |
 | `make build` | Build the application binary |
 | `make build-linux` | Build for Linux (AMD64) |
 | `make run` | Build and run the application |
