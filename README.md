@@ -68,8 +68,14 @@ make build-linux
 
 ### Docker Deployment
 
-#### Build and Run with Docker
+#### Local Docker Development
 ```bash
+# Build Docker image for local use
+make docker-build
+
+# Build Docker image for Mac (AMD64 platform)
+make docker-build-mac
+
 # Build and run interactively
 make docker-run
 
@@ -81,6 +87,15 @@ make docker-stop
 
 # Clean up Docker image
 make docker-clean
+```
+
+#### ECR Deployment
+```bash
+# Build image with ECR repository tag
+make docker-build-ecr
+
+# Build and push to ECR in one command
+make docker-push-ecr
 ```
 
 ## API Endpoints
@@ -123,7 +138,10 @@ Hello, Echo Server!
 | `make build` | Build the application binary |
 | `make build-linux` | Build for Linux (AMD64) |
 | `make run` | Build and run the application |
-| `make docker-build` | Build Docker image |
+| `make docker-build` | Build Docker image locally |
+| `make docker-build-mac` | Build Docker image for Mac (AMD64 platform) |
+| `make docker-build-ecr` | Build Docker image with ECR repository tag |
+| `make docker-push-ecr` | Build and push Docker image to ECR |
 | `make docker-run` | Build and run with Docker (interactive) |
 | `make docker-run-detached` | Build and run with Docker (detached) |
 | `make docker-stop` | Stop and remove the Docker container |
