@@ -26,8 +26,22 @@ build-linux:
 run: build
 	./go-echo-server
 
+# Docker build variables
+ECR_REPO = 684154893900.dkr.ecr.us-east-1.amazonaws.com/1v-apigw-go-echo-server
+ECR_TAG = master-latest
+LOCAL_TAG = go-echo-server
+
 docker-build:
-	docker build -t go-echo-server .
+	docker build -t $(LOCAL_TAG) .
+
+docker-build-mac:
+	docker buildx build --platform linux/amd64 -t $(LOCAL_TAG) .
+
+docker-build-ecr:
+	docker buildx build --platform linux/amd64 -t $(ECR_REPO):$(ECR_TAG) .
+
+docker-push-ecr: docker-build-ecr
+	docker push $(ECR_REPO):$(ECR_TAG)
 
 docker-run: docker-build
 	docker run -p 8080:8080 go-echo-server
